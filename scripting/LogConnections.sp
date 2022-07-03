@@ -1,7 +1,7 @@
 #define PLUGIN_NAME           "Log Connections"
 #define PLUGIN_AUTHOR         "Snowy"
 #define PLUGIN_DESCRIPTION    "Logs user and player connections"
-#define PLUGIN_VERSION        "1.0"
+#define PLUGIN_VERSION        "1.01"
 #define PLUGIN_URL            ""
 
 #include <sourcemod>
@@ -169,7 +169,7 @@ public void Event_PlayerDisconnect(Event event, const char[] name, bool dontBroa
     if (!client || IsFakeClient(client))
         return;
         
-    char playerName[128], discReason[128], authID[64], IPAddress[32];
+    char playerName[128], discReason[256], authID[64], IPAddress[32];
     int connectionTime = -1;
     
     GetClientName(client, playerName, sizeof(playerName));
@@ -266,7 +266,7 @@ stock void SaveAndSetCookies(int client)
 
 stock void Log(LOGTYPE logType, bool appendPrefix, const char[] message, any ...)
 {
-    char time[32], logMessage[PLATFORM_MAX_PATH];
+    char time[32], logMessage[512];
     FormatTime(time, sizeof(time), "%X", GetTime());
     VFormat(logMessage, sizeof(logMessage), message, 4);
     
@@ -286,7 +286,7 @@ stock void Log(LOGTYPE logType, bool appendPrefix, const char[] message, any ...
 
 stock void PrintMessageToAdmins(const char[] message, any ...)
 {
-    char printMessage[PLATFORM_MAX_PATH];
+    char printMessage[128];
     VFormat(printMessage, sizeof(printMessage), message, 2);
     
     for (int i = 1; i <= MaxClients; i++)
