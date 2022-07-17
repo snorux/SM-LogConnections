@@ -1,7 +1,7 @@
 #define PLUGIN_NAME           "Log Connections"
 #define PLUGIN_AUTHOR         "Snowy"
 #define PLUGIN_DESCRIPTION    "Logs user and player connections"
-#define PLUGIN_VERSION        "1.01"
+#define PLUGIN_VERSION        "1.02"
 #define PLUGIN_URL            ""
 
 #include <sourcemod>
@@ -175,6 +175,7 @@ public void Event_PlayerDisconnect(Event event, const char[] name, bool dontBroa
     GetClientName(client, playerName, sizeof(playerName));
     GetClientIP(client, IPAddress, sizeof(IPAddress));
     event.GetString("reason", discReason, sizeof(discReason));
+    ReplaceString(discReason, sizeof(discReason), "\n", " ", false);
     
     if (!GetClientAuthId(client, AuthId_Steam2, authID, sizeof(authID)))
         Format(authID, sizeof(authID), "Unknown SteamID");
